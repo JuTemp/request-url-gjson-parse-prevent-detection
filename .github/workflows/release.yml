@@ -1,9 +1,9 @@
 name: Build and Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # push:
+  #   tags:
+  #     - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -21,12 +21,15 @@ jobs:
       with:
         go-version: stable
 
-    - run: go mod download && go build
+    - run: |
+        echo "TAG_NAME=$(date -u +%Y%m%d-%H%M00)" >> $GITHUB_ENV
+        go mod download && go build
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: main
         generate_release_notes: true
+        tag_name: ${{ env.TAG_NAME }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
