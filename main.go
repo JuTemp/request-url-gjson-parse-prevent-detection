@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"flag"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -77,10 +78,10 @@ func main() {
 	}
 
 	if *path == "" {
-		println(string(body))
+		fmt.Println(string(body))
 	} else {
 		result := gjson.Get(string(body), *path).String()
-		println(result)
+		fmt.Println(result)
 	}
 
 }
