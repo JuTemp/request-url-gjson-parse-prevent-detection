@@ -30,7 +30,9 @@ jobs:
         echo "TAG_NAME=$(date -u +%Y%m%d-%H%M00)" >> $GITHUB_ENV
     
     - run: |
-        name=$( grep 'TAG_NAME=' $GITHUB_ENV | cut -d '=' -f 2 )
+        date="$(date -u +%Y%m%d-%H%M00)"
+        name="request-url-gjson-parse-prevent-detection-v${date}"
+        echo "TAG_NAME=${date}" >> $GITHUB_ENV
         echo "NAME=${name}" >> $GITHUB_ENV
         go mod download && go build -o ${name}
 
