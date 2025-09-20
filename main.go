@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/tidwall/gjson"
 )
@@ -19,6 +20,7 @@ func main() {
 	cookie := flag.String("cookie", "", "Cookie")
 	authorization := flag.String("authorization", "", "Authorization")
 	contentType := flag.String("content-type", "", "Content-Type")
+	dataRaw := flag.String("data-raw", "", "Raw Data")
 
 	path := flag.String("path", "", "GJSON Path (https://github.com/tidwall/gjson/blob/master/SYNTAX.md)")
 
@@ -41,7 +43,17 @@ func main() {
 		*referer = u.String()
 	}
 
-	req, err := http.NewRequest("GET", u.String(), nil)
+	var method string
+	var reqBody io.Reader
+	if *dataRaw != "" {
+		method = "POST"
+		reqBody = strings.NewReader(*dataRaw)
+	} else {
+		method = "GET"
+		reqBody = nil
+	}
+
+	req, err := http.NewRequest(method, u.String(), reqBody)
 	if err != nil {
 		panic(err)
 	}
