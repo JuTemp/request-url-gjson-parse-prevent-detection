@@ -16,6 +16,7 @@ func main() {
 	userAgent := flag.String("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36", "User-Agent")
 	origin := flag.String("origin", "", "Origin")
 	referer := flag.String("referer", "", "Referer")
+	cookie := flag.String("cookie", "", "Cookie")
 
 	path := flag.String("path", "", "GJSON Path (https://github.com/tidwall/gjson/blob/master/SYNTAX.md)")
 
@@ -46,6 +47,7 @@ func main() {
 	req.Header.Set("User-Agent", *userAgent)
 	req.Header.Set("Origin", *origin)
 	req.Header.Set("Referer", *referer)
+	req.Header.Set("Cookie", *cookie)
 
 	// Prevent Cloudflare detection
 	client := &http.Client{
