@@ -17,6 +17,8 @@ func main() {
 	origin := flag.String("origin", "", "Origin")
 	referer := flag.String("referer", "", "Referer")
 	cookie := flag.String("cookie", "", "Cookie")
+	authorization := flag.String("authorization", "", "Authorization")
+	contentType := flag.String("content-type", "", "Content-Type")
 
 	path := flag.String("path", "", "GJSON Path (https://github.com/tidwall/gjson/blob/master/SYNTAX.md)")
 
@@ -44,10 +46,18 @@ func main() {
 		panic(err)
 	}
 
-	req.Header.Set("User-Agent", *userAgent)
-	req.Header.Set("Origin", *origin)
-	req.Header.Set("Referer", *referer)
-	req.Header.Set("Cookie", *cookie)
+	for k, v := range map[string]string{
+		"User-Agent":    *userAgent,
+		"Origin":        *origin,
+		"Referer":       *referer,
+		"Cookie":        *cookie,
+		"Authorization": *authorization,
+		"Content-Type":  *contentType,
+	} {
+		if v != "" {
+			req.Header.Set(k, v)
+		}
+	}
 
 	// Prevent Cloudflare detection
 	client := &http.Client{
