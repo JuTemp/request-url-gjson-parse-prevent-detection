@@ -45,9 +45,10 @@ func main() {
 
 	var method string
 	var reqBody io.Reader
-	if *dataRaw != "" {
+	data := *dataRaw
+	if data != "" {
 		method = "POST"
-		reqBody = strings.NewReader(*dataRaw)
+		reqBody = strings.NewReader(data)
 	} else {
 		method = "GET"
 		reqBody = nil
