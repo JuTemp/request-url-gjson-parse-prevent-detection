@@ -92,8 +92,10 @@ func main() {
 				},
 			},
 		}
-	} else {
+	} else if strings.HasPrefix(u.String(), "http://") {
 		client = *http.DefaultClient
+	} else {
+		panic("request url scheme error, only support https and http")
 	}
 
 	resp, err := client.Do(req)
